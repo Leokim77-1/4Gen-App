@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Receipt Generator</title>
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 20px;
+            }
+
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+position: fixed;
+            }
+        .ccon{
+          padding-left: 5px;
+          overflow-y: auto;
+                overflow-x: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 620px;
+        }
+          
+
+            canvas {
+                margin-left: -5px;
+                border: 2px solid grey;
+                border-radius: 10px;
+                margin-top: 60px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                background-color: white;
+            }
+
+            .circle-button {
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+                background-color: #007bff;
+                border: none;
+                border-radius: 50%;
+                color: white;
+                font-size: 14px;
+                cursor: pointer;
+                text-align: center;
+                line-height: 50px;
+            }
+
+            .circle-button.active {
+                background-color: #28a745;
+            }
+
+            .taskbar {
+                width: 200px;
+                display: flex;
+                background-color: #0B1013;
+                
+                margin-top: 25px;
+                margin-left: 40px;
+                padding-top: 7px;
+                padding-bottom: 7px;
+                padding-left: 20px;
+                padding-right: 20px;
+                border-radius: 20px;
+                position: absolute;
+            }
+
+            .d {
+                width: 30px;
+                height: 30px;
+                margin-top: 7px;
+            }
+
+            .add {
+                width: 50px;
+                margin-left: 70px;
+                margin-top: -30px;
+                border-radius: 50px;
+                border-color: white;
+                border-style: solid;
+                position: absolute;
+            }
+
+            .taskbar button {
+                width: 70px;
+                background: none;
+                border: none;
+                margin-left: 120px;
+            }
+
+            .bimg {
+                width: 40px;
+            }
+
+            .topbar {
+                width: 400px;
+                background-color: #0B1013;
+                margin: -20px;
+                padding-bottom: 7px;
+                position: fixed;
+                height: 50px;
+            }
+
+            .back {
+                width: 40px;
+                margin-left: 20px;
+                margin-top: 10px;
+            }
+
+            .set {
+                color: white;
+                position: fixed;
+                opacity: 1;
+                background-color: rgb(60, 60, 60);
+                width: 300px;
+                margin-left: 400px;
+                margin-top: 55px;
+                padding: 20px;
+                border-radius: 7px;
+                transition: margin-left 0.5s;
+
+            }
+
+            .items {
+
+                position: fixed;
+                opacity: 1;
+                margin-top: -570px;
+                background-color: rgb(60, 60, 60);
+                padding-top: 50px;
+                padding-bottom: 150px;
+                padding-left: 10px;
+                padding-right: 10px;
+                margin-left: -400px;
+                width: 341px;
+                border-radius: 7px;
+                transition: margin-left 0.5s;
+                overflow-y: auto;
+                overflow-x: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 300px;
+
+            }
+
+
+            .close {
+                width: 40px;
+                position: absolute;
+                margin-left: 285px;
+                margin-top: -30px;
+                border-radius: 50px;
+                border-color: white;
+                border-style: solid;
+            }
+
+.close2 {
+                width: 40px;
+                position: absolute;
+                margin-left: 285px;
+                margin-top: -30px;
+                border-radius: 50px;
+                border-color: white;
+                border-style: solid;
+                position: fixed;
+                
+            }
+
+            .itemcon {
+                margin-left: -30px;
+            }
+
+
+            .itemcon input {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: none;
+                height: 30px;
+                width: 250px;
+                margin-left: 30px
+            }
+
+
+
+            .itemcon input::placeholder {
+                font-weight: bold;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+
+            }
+
+            .sub {
+                display: flex;
+            }
+
+            .sub input {
+                width: 100px;
+            }
+
+            label {
+                padding: 5px 10px;
+                background: linear-gradient(35deg,rgb(41, 41, 41),rgb(56, 56, 56),rgb(163, 163, 163));
+                color: white;
+                font-weight: bold;
+                font-family: Tahoma;
+                margin-left: 100px;
+                margin-top: -30px;
+                position: fixed;
+                border-radius: 5px;
+
+            }
+
+.iadder{
+background: linear-gradient(35deg,rgb(20, 128, 39),rgb(54, 250, 97),rgb(160, 243, 160));
+    font-size: 17px;
+    font-weight: bold;
+                font-family: Verdana;
+    margin-top: 400px;
+    padding: 5px 10px;
+                border-radius: 5px;
+                border: none;
+                height: 30px;
+                width: 250px;
+                position: fixed;
+}
+
+select{
+    background: linear-gradient(35deg,rgb(20, 128, 39),rgb(54, 250, 97),rgb(160, 243, 160));
+    font-size: 17px;
+    font-weight: bold;
+                font-family: Verdana;
+    margin-top: 10px;
+    padding: 5px 5px;
+                border-radius: 5px;
+                border: none;
+                height: 30px;
+                width: 150px;
+            
+}
+
+option{
+background-color: #0B1013;
+color: white;
+}
+
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="topbar">
+
+            </div>
+
+            <div class="set">
+                <!-- Top Text Input -->
+                <img src="x.png" class="close" alt="">
+                <div>
+                    <input type="text" id="topText" placeholder="Enter Bussiness name" style="margin-bottom: 30px; margin-top:20px; padding: 5px 10px; border-radius: 5px; border: none; height: 30px; width: 250px; margin-left: 10px">
+                </div>
+
+                <!-- Buyer Name Input -->
+                <div>
+
+                    <input type="text" id="buyerName" placeholder="Enter buyer's name" style=" margin-bottom: 30px;
+            padding: 5px 10px; border-radius: 5px; border: none; height: 30px; width: 250px; margin-left: 10px">
+                </div>
+
+                <div>
+
+                        <input type="text" class="btxt" placeholder="Bottom Text" style=" margin-bottom: 30px;
+                padding: 5px 10px; border-radius: 5px; border: none; height: 30px; width: 250px; margin-left: 10px">
+                    </div>
+
+                    <div>
+
+                            <input type="text" class="fname" placeholder="File Name" style=" margin-bottom: 50px;
+                    padding: 5px 10px; border-radius: 5px; border: none; height: 30px; width: 250px; margin-left: 10px">
+                        </div>
+
+
+                <!-- Logo Input -->
+                <div>
+                    <label for="logoInput">Select Logo:</label>
+                    <input type="file" id="logoInput" accept="image/*" style="width: 100%; margin-bottom: 20px;">
+                </div>
+
+
+
+                <!-- Payment Toggle -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button id="paymentToggle" class="circle-button" style="border-style: solid; border-color: white;"></button>
+                    <p id="paymentLabel">Payment Method: Cashless</p>
+                </div>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <label for="save as" style="margin-left: -90px; margin-top: 10px;">Save As</label>
+                            <select name="" id="extension">
+<option value=".png">PNG</option>
+
+
+                            </select>
+                    </div>
+
+            </div>
+            <div class="ccon">
+                        <canvas id="receiptCanvas" width="330" height="550"></canvas>  
+            </div>
+
+
+
+
+
+            <div class="taskbar">
+                <img src="dash.png" alt="" class="d">
+                <img src="add.png" alt="" class="add">
+                <button id="generate">
+                    <img src="download (2).png" alt="" class="bimg">
+                </button>
+
+
+
+            </div>
+
+
+            <div id="items" class="items">
+                <!-- Item Input Fields -->
+                <div class="itemcon">
+                    <img src="x.png" class="close2" alt="" style="margin-top: -52px; margin-left: 296px;">
+                    <div class="toptxt">
+                        <label for="Add an Item">Add an Item</label>
+                    </div>
+
+
+<div class="itemhld">
+
+        <div class="list">
+            <div class="item">
+                    <input type="text" placeholder="item" class="name">
+                    <div class="sub">
+                        <input type="number" placeholder="Price (¢)" class="price">
+                        <input type="number" placeholder="Quantity" class="quantity">
+                            </div>
+                        </div>
+            </div>
+
+               
+
+
+
+</div>
+   
+
+                </div>
+
+                    <button id="newi" class="iadder">New Item</button>
+                <!-- Additional items dynamically added if needed -->
+            </div>
+
+
+        </div>
+
+        <script>
+
+
+            const canvas = document.getElementById('receiptCanvas');
+            const ctx = canvas.getContext('2d');
+            let logoImage = null;
+            let paymentMethod = 'Cashless';
+
+          
+
+            function updateCanvas() {
+                const items = document.querySelectorAll('.item');
+                const currentDate = new Date().toLocaleDateString();
+                const topText = document.getElementById('topText').value || "Bussiness Name Here";
+                const buyerName = document.getElementById('buyerName').value || "Valued Customer";
+                let y = 30;
+                let total = 0;
+
+
+
+
+                // Clear canvas
+                ctx.fillStyle = 'white'; // Set white background
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw top text
+                ctx.font = '18px Arial';
+                ctx.fontWeight = 'bolder';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = 'black';
+                ctx.fillText(topText, canvas.width / 2, y);
+                y += 20;
+
+                // Draw logo if available
+                if (logoImage) {
+                    const logoX = (canvas.width - 210) / 2;
+                    const logoY = y;
+                    ctx.globalAlpha = 0.5;
+                    ctx.drawImage(logoImage, logoX, logoY, 210, 210);
+                    ctx.globalAlpha = 1.0;
+                    y += 80;
+                }
+
+                // Draw buyer name
+                ctx.font = '14px Arial';
+                ctx.textAlign = 'left';
+                
+                ctx.fillText(`Buyer: ${buyerName}`, 10, y);
+                y += 20;
+
+                // Draw date and payment method
+                ctx.font = '12px Arial';
+                ctx.fillText('Date: ' + currentDate, 10, y);
+                y += 20;
+                ctx.fillText('Payment: ' + paymentMethod, 10, y);
+                y += 20;
+                ctx.fillText('---------------------------------------------------------------------------------------------', 10, y);
+                y += 20;
+
+                // Draw items
+                items.forEach(item => {
+                    const name = item.querySelector('.name').value;
+                    const price = parseFloat(item.querySelector('.price').value) || 0;
+                    const quantity = parseInt(item.querySelector('.quantity').value) || 0;
+                        
+
+                    if (name && price && quantity) {
+                        const subtotal = price * quantity;
+                        total += subtotal;
+
+                        ctx.fillText(`${name} - ¢${price} x ${quantity} = ¢${subtotal}`,60, y);
+                        y += 20;
+                    }
+                });
+
+   var gen = document.querySelector('.btxt');
+if (gen.value == ''){
+gen.value = 'Thank You For Purchasing';
+}
+var txt = gen.value;
+                ctx.fillText('--------------------------------------------------------------------', 50, y);
+                y += 20;
+                ctx.font = '18px Arial';
+                ctx.fontWeight = 'bolder';
+                ctx.fillText(`Total: ¢${total.toFixed(2)}`, 100, y);
+                y += 20;
+                ctx.fontWeight = 'bolder';
+                ctx.font = '12px Arial';
+                ctx.fillText('--------------------------------------------------------------------', 50, y);
+
+       
+                ctx.font = '16px Arial';
+                ctx.fillText(txt, 50, y+=20);
+var tuy = y+=20;
+   if (tuy > canvas.height){
+     canvas.height = tuy+=20;
+   };        
+                ctx.fillText('----------------------------------------------------------------------', 10, tuy);
+            
+
+            }
+
+            // Event listener for top text input
+            document.getElementById('topText').addEventListener('input', updateCanvas);
+
+            // Event listener for buyer name input
+            document.getElementById('buyerName').addEventListener('input', updateCanvas);
+
+            // Event listener for logo input
+            document.getElementById('logoInput').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        logoImage = new Image();
+                        logoImage.onload = updateCanvas;
+                        logoImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Event listener for payment toggle
+            const paymentToggle = document.getElementById('paymentToggle');
+            const paymentLabel = document.getElementById('paymentLabel');
+
+            paymentToggle.addEventListener('click', function () {
+                paymentMethod = paymentMethod === 'Cashless' ? 'Cash' : 'Cashless';
+
+                paymentLabel.textContent = `Payment Method: ${paymentMethod}`;
+                paymentToggle.classList.toggle('active');
+                updateCanvas();
+            });
+            const fni = document.querySelector('.fname');
+
+ const gettype = document.getElementById('extension');
+ if (fni.value == ''){
+fni.value = 'Reciept';
+}
+
+            // Event listener for download button
+            document.getElementById('generate').addEventListener('click', () => {
+                const link = document.createElement('a');
+                link.download = fni.value + gettype.value;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+
+            // Initialize canvas
+
+setInterval(function(){
+    updateCanvas();
+}, 1000)
+
+           
+
+const i = document.querySelector('.items');
+            const set = document.querySelector('.set');
+            const pop = document.querySelector('.d');
+            const x = document.querySelector('.close');
+            const x2 = document.querySelector('.close2');
+            const add = document.querySelector('.add');
+
+            pop.addEventListener('click', function () {
+                set.style.marginLeft = '-8px';
+            })
+
+ add.addEventListener('click', function () {
+                i.style.marginLeft = '-8px';
+            })
+
+            x.addEventListener('click', function () {
+                set.style.marginLeft = '400px';
+
+            }) 
+
+             x2.addEventListener('click', function () {
+                items.style.marginLeft = '400px';
+
+            }) 
+
+
+        const adder = document.querySelector('.iadder');
+        const list = document.querySelector('.list');
+        const itemContainer = document.querySelector('.item');
+
+adder.addEventListener('click', function(){
+
+     var newItem = itemContainer.cloneNode(true);
+
+
+list.appendChild(newItem);
+
+})
+
+
+        </script>
+    </body>
+
+</html>

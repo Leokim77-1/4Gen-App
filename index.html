@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reciept Generator</title>
+    <link rel="stylesheet" href="st.css">
+    <script src="Main.js"></script>
+</head>
+<body>
+    
+<div class="main">
+
+<div class="top">
+
+</div>
+
+<div class="subtop">
+<img src="banner.png" alt="">
+</div>
+
+<div class="middle">
+<div class="sec">
+    <div class="blob"  onclick="receipt()">
+        <img src="invoice.png" alt="">
+        <div class="txt">Create Reciept</div>
+    </div>
+    <div class="blob" onclick="qrcode()">
+            <img src="qr.png" alt="">
+            <div class="txt">Create QR Code</div>
+    </div>
+</div>
+
+<div class="sec">
+        <div class="blob" onclick="scan()">
+                <img src="Scan.png" alt="">
+                <div class="txt">Scan QR Code</div>
+        </div>
+        <div class="blob" onclick="file()">
+                <img src="txt.png" alt="">
+                <div class="txt">Create a File</div>
+        </div>
+    </div>
+</div>
+
+<div class="bottom">
+<img src="home (1).png" alt="" class="h">
+<img src="info.png" alt="" class="info">
+</div>
+
+</div>
+<script>
+  const info = document.querySelector('.info');
+  
+  info.addEventListener('click', function(){
+    window.location.href = 'Doc.html';
+  });
+  
+  
+</script>
+
+</body>
+</html>

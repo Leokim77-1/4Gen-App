@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code & Barcode Reader</title>
+    <style>
+    
+    .down img {
+      background-color: black;
+      padding: 10px;
+                     width: 50px;
+                margin-left: 100px;
+                margin-top: -50px;
+                border-radius: 50px;
+                border-color: white;
+                border-style: solid;
+                position: absolute; 
+      
+    }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        #upload-container {
+            margin: 30px;
+            background-color: black;
+            border-radius: 6px;
+            padding-bottom: 19px;
+            padding-top: 10px;
+            margin: -23px;
+           margin-bottom: 15px;
+           position: fixed;
+          
+        }
+     .down{
+       background-color: black;
+border-radius: 25px;
+margin-top: 230px;
+position: fixed;
+padding: 15px 300px 40px 15px;
+}
+.down img{
+position: absolute;
+left: 20px;
+mmargin-bottom:  40px ;
+}
+
+        #upload-container lable{
+color: white;
+}
+
+        #upload-container input{
+          margin-left: 130px;
+          margin-top: 25px;
+          
+        }
+        
+        #image-preview, #video-preview {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            
+           
+        }
+                #image-preview{
+                  padding-top: 15px;
+                  padding-bottom: 60px;
+                 margin-top: 200px;
+                }
+        #result {
+            margin-top: 20px;
+          font-size: 18px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="upload-container">
+      <lable for="input">Upload QR Code</lable>
+        <input type="file" id="image-input" accept="image/*">
+    </div>
+    
+    
+    
+    
+    
+    <div id="image-preview">
+        <img id="uploaded-image" alt="Preview will appear here" style="max-width: 100%; display: none;">
+
+    </div>
+    <div id="result">No result yet...</div>
+
+
+<div class="down">
+<img src="copy.png" class="copy">
+</div>
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script>
+        const imageInput = document.getElementById('image-input');
+        const uploadedImage = document.getElementById('uploaded-image');
+        const resultDiv = document.getElementById('result');
+        const cameraButton = document.getElementById('camera-button');
+        const stopCameraButton = document.getElementById('stop-camera');
+        const videoPreview = document.getElementById('video-preview');
+        let stream = null;
+
+        // Decode QR code
+        function decodeQRCode(imageData, width, height) {
+            const qrCodeData = jsQR(imageData, width, height);
+            return qrCodeData ? `QR Code Data: ${qrCodeData.data}` : null;
+        }
+const copy = document.querySelector('.copy');
+
+copy.addEventListener('click', function(){
+  var full = resultDiv.innerHTML;
+  var copied = full.split("QR Code Data:");
+  
+          navigator.clipboard.writeText(copied).then(() => {
+            alert(copied);
+        });
+});
+
+
+        // Decode Barcode using Quagga
+        function decodeBarcode(canvas) {
+            return new Promise((resolve) => {
+                const imageDataUrl = canvas.toDataURL();
+                Quagga.decodeSingle({
+                    src: imageDataUrl,
+                    numOfWorkers: 0,
+                    inputStream: { size: 800 },
+                    decoder: { readers: ["code_128_reader", "ean_reader", "ean_8_reader"] },
+                }, (result) => {
+                    resolve(result?.codeResult?.code || null);
+                });
+            });
+        }
+
+        // Handle uploaded image
+        imageInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const imageUrl = e.target.result;
+                    uploadedImage.src = imageUrl;
+                    uploadedImage.style.display = 'block';
+
+                    const image = new Image();
+                    image.src = imageUrl;
+                    image.onload = async () => {
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.width = image.width;
+                        canvas.height = image.height;
+                        context.drawImage(image, 0, 0, image.width, image.height);
+
+                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                        let result = decodeQRCode(imageData.data, canvas.width, canvas.height);
+                        if (!result) {
+                            result = await decodeBarcode(canvas);
+                        }
+                        resultDiv.textContent = result || 'No QR code or barcode detected. Try another image.';
+                    };
+                };
+                reader.readAsDataURL(file);
+            } else {
+                resultDiv.textContent = 'No file selected.';
+            }
+        });
+
+        // Handle camera stream
+        cameraButton.addEventListener('click', async () => {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert('Camera not supported on this device.');
+                return;
+            }
+
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            videoPreview.srcObject = stream;
+            videoPreview.style.display = 'block';
+            stopCameraButton.style.display = 'inline-block';
+
+            const captureFrame = async () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = videoPreview.videoWidth;
+                canvas.height = videoPreview.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(videoPreview, 0, 0, canvas.width, canvas.height);
+
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                let result = decodeQRCode(imageData.data, canvas.width, canvas.height);
+                if (!result) {
+                    result = await decodeBarcode(canvas);
+                }
+                resultDiv.textContent = result || 'No QR code or barcode detected. Keep trying...';
+            };
+
+            videoPreview.addEventListener('click', captureFrame);
+        });
+
+        // Stop camera stream
+        stopCameraButton.addEventListener('click', () => {
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach((track) => track.stop());
+                videoPreview.style.display = 'none';
+                stopCameraButton.style.display = 'none';
+                resultDiv.textContent = 'Camera stopped.';
+            }
+        });
+    </script>
+</body>
+</html>

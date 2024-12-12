@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4Gen App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .top-bar {
+            background-color: black;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            animation: fadeIn 1s ease-in;
+        }
+        .documentation {
+            padding: 20px;
+            margin: 10px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: slideIn 0.5s ease-out;
+                      overflow-y: auto;
+                overflow-x: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 400px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        li:hover {
+            background-color: #d5d5d5;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <h1>4Gen App</h1>
+</div>
+
+<h2>Documentation</h2>
+<div class="documentation">
+    <p>Welcome to the 4Gen App documentation! Our application is designed to streamline your daily tasks with powerful features that enhance productivity and efficiency. Below are the key features of our app:</p>
+    <ul>
+        <li>
+            <strong>Generate a Custom Receipt:</strong> Create personalized receipts tailored to your needs. Whether for business or personal use, our app allows you to input specific details to generate a professional-looking receipt instantly.
+        </li>
+        <li>
+            <strong>Create a Barcode and QR Code:</strong> Easily generate barcodes and QR codes for various applications. This feature is perfect for inventory management, marketing campaigns, or sharing information quickly and efficiently.
+        </li>
+        <li>
+            <strong>Scan a QR Code:</strong> Utilize your phones storage by importing and to scan QR codes effortlessly. Our app will decode the information and display it in a user-friendly format, making it easier than ever to access content or links.
+        </li>
+        <li>
+            <strong>Create Documents:</strong> Generate documents in multiple formats including PDF, TXT, PNG, JPEG, and Microsoft Word. This feature allows you to create and export important documents directly from the app, ensuring that you have the right format for every situation.
+        </li>
+    </ul>
+    <p>We are committed to providing a user-friendly experience and continuously improving our app based on user feedback.</p>
+</div>
+
+<div class="footer">
+    <p>Built by VectorAce Studio Inc</p>
+    <p>Version 1.0 Beta</p>
+</div>
+
+</body>
+</html>

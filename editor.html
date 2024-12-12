@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Document Creator</title>
+    <style>
+    .home{
+      padding: 0px;
+                position: absolute;
+                margin-left: 0px;
+                margin-top: 23px;
+                border-radius: 50px;
+                border-color: white;
+                border-style: solid;
+    
+    }
+    
+    
+    .home img{
+      width: 40px;
+                position: absolute;
+                margin-left: 0px;
+                margin-top: -30px;
+                border-radius: 50px;
+                border-color: white;
+                border-style: solid;
+    }
+    .popup{
+      color: white;
+      display: none;
+      position: absolute;
+      background-color: rgb(60, 60, 60);
+      margin-top: -600px;
+      margin-left: -7px;
+       height: 500px;
+      width: 300px;
+      padding: 20px;
+                border-radius: 7px;
+                transition: margin-left 0.5s;
+    }
+    
+    
+    
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .toolbar select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .popup input{
+margin-bottom: 20px;
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: none;
+                height: 30px;
+                width: 250px;
+                margin-left: 30px
+        }
+        
+        textarea {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: none;
+            margin-left: -10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+margin-bottom: 20px;
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: none;
+                height: 30px;
+                width: 250px;
+                margin-left: 30px
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="Main.js"></script>
+</head>
+<body>
+    <div class="container">
+       
+
+        <div class="toolbar">
+            <label for="fontColor">Font Color:</label>
+            <input type="color" id="fontColor" onchange="changeFontColor()">
+
+            <label for="fontSize">Font Size:</label>
+            <input type="number" id="fontSize" min="8" max="100" placeholder="16" onchange="changeFontSize()">
+
+            <label for="boldToggle">Bold:</label>
+            <select id="boldToggle" onchange="toggleFontWeight()">
+                <option value="normal">Normal</option>
+                <option value="bold">Bold</option>
+            </select>
+
+            <label for="fontStyle">Font Style:</label>
+            <select id="fontStyle" onchange="changeFontStyle()">
+                <option value="normal">Normal</option>
+                <option value="italic">Italic</option>
+            </select>
+
+            <label for="bgColor">Background Color:</label>
+            <input type="color" id="bgColor" onchange="changeBackgroundColor()">
+
+            <label for="textAlign">Text Alignment:</label>
+            <select id="textAlign" onchange="justifyText()">
+                <option value="left">Left</option>
+                <option value="center">Center</option>
+                <option value="right">Right</option>
+                <option value="justify">Justify</option>
+            </select>
+        </div>
+
+        <textarea id="textInput" placeholder="Write your text here..."></textarea>
+
+        <button id="saveButton">Save</button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="popup" id="popup">
+        <h3>Select File Format and Name</h3>
+        <input type="text" id="fileName" placeholder="Enter file name" />
+        <button onclick="saveFile('pdf')">Save as PDF</button>
+        <button onclick="saveFile('png')">Save as PNG</button>
+        <button onclick="saveFile('jpeg')">Save as JPEG</button>
+        <button onclick="saveFile('doc')">Save as Word Document</button>
+        <button onclick="saveFile('txt')">Save as Text File</button>
+        <button onclick="closePopup()">Cancel</button>
+    </div>
+
+    <script>
+        const saveButton = document.getElementById('saveButton');
+        const popup = document.getElementById('popup');
+        const overlay = document.getElementById('overlay');
+        const textInput = document.getElementById('textInput');
+
+        saveButton.addEventListener('click', () => {
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+        });
+
+        function closePopup() {
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        function saveFile(format) {
+            const text = textInput.value;
+            const fileName = document.getElementById('fileName').value || 'document';
+            const blob = new Blob([text], { type: `text/${format}` });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+
+            switch (format) {
+                case 'pdf':
+                    link.download = `${fileName}.pdf`;
+                    break;
+                case 'png':
+                    link.download = `${fileName}.png`;
+                    break;
+                case 'jpeg':
+                    link.download = `${fileName}.jpeg`;
+                    break;
+                case 'doc':
+                    link.download = `${fileName}.doc`;
+                    break;
+                case 'txt':
+                    link.download = `${fileName}.txt`;
+                    break;
+            }
+
+            link.click();
+            URL.revokeObjectURL(url);
+            closePopup();
+        }
+
+        function changeFontColor() {
+            const color = document.getElementById('fontColor').value;
+            textInput.style.color = color;
+        }
+
+        function changeFontSize() {
+            const size = document.getElementById('fontSize').value;
+            if (size) textInput.style.fontSize = `${size}px`;
+        }
+
+        function toggleFontWeight() {
+            const boldOption = document.getElementById('boldToggle').value;
+            textInput.style.fontWeight = boldOption;
+        }
+
+        function changeFontStyle() {
+            const styleOption = document.getElementById('fontStyle').value;
+            textInput.style.fontStyle = styleOption;
+        }
+
+        function changeBackgroundColor() {
+            const color = document.getElementById('bgColor').value;
+            textInput.style.backgroundColor = color;
+        }
+
+        function justifyText() {
+            const alignment = document.getElementById('textAlign').value;
+            textInput.style.textAlign = alignment;
+        }
+        
+        const main = document.querySelector('.back');
+
+main.addEventlistener('click', function(){
+window.location.href = 'index.html';
+});
+    </script>
+</body>
+</html>
